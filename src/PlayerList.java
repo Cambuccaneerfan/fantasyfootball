@@ -42,7 +42,7 @@ public class PlayerList
       
       return playList;
    }
-   
+}
    /*
    public static Player player1;
    public static Player player2;
