@@ -8,7 +8,7 @@ public class PlayerTest
       System.out.println("Free Agents");
       
       int x = 0;
-      for (x = 0; x < Team.playerList().size(); x++)
+      for (x = 0; x < PlayerList.playerList().size(); x++)
       {
          if (!team1.getPlayer(x).getIsOwned())
          {
