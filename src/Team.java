@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class Team
 {
@@ -41,13 +38,13 @@ public class Team
    
    public void setStartingQB(int x)
    {
-      playerList().get(x).setIsOwned();
-      startingQB = playerList().get(x);
+      PlayerList.playerList().get(x).setIsOwned();
+      startingQB = PlayerList.playerList().get(x);
    }
    
    public Player getPlayer(int y)
    {
-      return playerList().get(y);
+      return PlayerList.playerList().get(y);
    }
    
    
