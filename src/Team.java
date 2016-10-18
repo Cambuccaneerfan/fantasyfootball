@@ -55,46 +55,4 @@ public class Team
    {
       return startingQB.playerToString();
    }
-   
-   public static final ArrayList<Player> playerList()
-   {
-      ArrayList<Player> playList = new ArrayList<Player>();
-      
-      Scanner playerScan = null;
-
-      try
-      {
-         playerScan = new Scanner(new FileInputStream("playerList.txt"));
-      }
-      catch (FileNotFoundException e)
-      {
-         System.out.println("playerList.txt not found.");
-         System.exit(0);
-      }
-      
-      while (playerScan.hasNext())
-      {
-         Player aPlayer = new Player();
-    	 
-         aPlayer.setPosition(playerScan.next());
-    	   aPlayer.setFreeAgent();
-    	  
-         if (playerScan.hasNext())
-         {
-        	 aPlayer.setFirstName(playerScan.next());
-         }
-         if (playerScan.hasNext())
-         {
-        	 aPlayer.setLastName(playerScan.next());
-         }
-         if (playerScan.hasNext())
-         {
-        	 aPlayer.setNflTeam(playerScan.next());
-         }
-         
-         playList.add(aPlayer); //add names in file to array list
-      }
-      
-      return playList;
-   }
 }
