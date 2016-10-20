@@ -1,55 +1,83 @@
-import java.util.ArrayList;
-
 public class Team
 {
-   private Player startingQB;
+   private String managerName;
+   private String teamName;
+	
+   private Player teamPlayer1;
+   private Player teamPlayer2;
    
    public Team()
    {
-      startingQB = new Player();
+	  managerName = "";
+	  teamName = "";
+	  teamPlayer1 = new Player();
+      teamPlayer2 = new Player();
    }
    
-   public Team(Player QB)
+   public String getManagerName()
    {
-      startingQB = QB;
+      return managerName;
    }
    
-   public Team(Team aTeam)
+   public String getTeamName()
    {
-      if (aTeam == null)
-         {
-            System.out.println("Fatal Error.");
-            System.exit(0);
-         }
-
-         startingQB = aTeam.startingQB;
+      return teamName;
    }
    
-   public Player getStartingQB()
+   public Player getTeamPlayer1()
    {
-      return startingQB;
+      return teamPlayer1;
    }
    
-   public void setStartingQB(Player QB)
+   public Player getTeamPlayer2()
    {
-      QB.setIsOwned();
-      startingQB = QB;
+      return teamPlayer2;
    }
    
-   public void setStartingQB(int x)
+   public void setManagerName(String mName)
    {
-      PlayerList.playerList().get(x).setIsOwned();
-      startingQB = PlayerList.playerList().get(x);
+      managerName = mName;
+   }
+   
+   public void setTeamName(String tName)
+   {
+      teamName = tName;
+   }
+   
+   public void setTeamPlayer1(Player p1)
+   {
+	   teamPlayer1 = p1;
+	   p1.setIsOwned();
+   }
+   
+   public void setTeamPlayer2(Player p2)
+   {
+	   teamPlayer2 = p2;
+	   p2.setIsOwned();
+   }
+   
+   public void setTeamPlayer1(int x)
+   {
+      teamPlayer1 = League.playerList().get(x);
+      teamPlayer1.setIsOwned();
+      League.playerList().set(x, teamPlayer1);
+   }
+   
+   public void setTeamPlayer2(int x)
+   {
+      teamPlayer2 = League.playerList().get(x);
+      teamPlayer2.setIsOwned();
+      League.playerList().set(x, teamPlayer2);
    }
    
    public Player getPlayer(int y)
    {
-      return PlayerList.playerList().get(y);
+      return League.playerList().get(y);
    }
    
    
    public String teamToString()
    {
-      return startingQB.playerToString();
+      return "Manager: " + managerName + "\n" + "Team: " + teamName + "\n" + teamPlayer1.playerToString() + "\n" + teamPlayer2.playerToString();
    }
 }
