@@ -5,7 +5,7 @@ public class Player
    private String firstName;
    private String lastName;
    private String nflTeam;
-   private Boolean isOwned;
+   private boolean isOwned;
    
    public Player()
    {
@@ -14,30 +14,6 @@ public class Player
       lastName = "";
       nflTeam = "";
       isOwned = false;
-   }
-   
-   public Player(String pos, String first, String last, String team, Boolean owned)
-   {
-      position = pos;
-      firstName = first;
-      lastName = last;
-      nflTeam = team;
-      isOwned = owned;
-   }
-   
-   public Player(Player aPlayer)
-   {
-      if (aPlayer == null)
-         {
-            System.out.println("Fatal Error.");
-            System.exit(0);
-         }
-
-         position = aPlayer.position;
-         firstName = aPlayer.firstName;
-         lastName = aPlayer.lastName;
-         nflTeam = aPlayer.nflTeam;
-         isOwned = aPlayer.isOwned;
    }
    
    public String getPosition()
@@ -60,7 +36,7 @@ public class Player
       return nflTeam;
    }
    
-   public Boolean getIsOwned()
+   public boolean getIsOwned()
    {
       return isOwned;
    }
