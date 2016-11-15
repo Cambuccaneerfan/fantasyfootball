@@ -6,8 +6,6 @@ public class Team
    private String teamName;
 
    private ArrayList<Player> roster;
-   private Player teamPlayer1;
-   private Player teamPlayer2;
    
    private static int numQB;
    private static int numWR;
@@ -26,9 +24,6 @@ public class Team
 	  teamName = "";
 	  
 	  roster = new ArrayList<Player>();
-	  
-	  teamPlayer1 = new Player();
-      teamPlayer2 = new Player();
       
       numQB = 0;
       numWR = 0;
@@ -48,18 +43,8 @@ public class Team
    }
    
    public ArrayList<Player> getRoster()
-	{
-		return roster;
-	}
-   
-   public Player getTeamPlayer1()
    {
-      return teamPlayer1;
-   }
-   
-   public Player getTeamPlayer2()
-   {
-      return teamPlayer2;
+      return roster;
    }
    
    public static int getNumQB()
@@ -102,32 +87,6 @@ public class Team
       teamName = tName;
    }
    
-   public void setTeamPlayer1(Player p1)
-   {
-	   teamPlayer1 = p1;
-	   p1.setIsOwned();
-   }
-   
-   public void setTeamPlayer2(Player p2)
-   {
-	   teamPlayer2 = p2;
-	   p2.setIsOwned();
-   }
-   
-   public void setTeamPlayer1(int x)
-   {
-      teamPlayer1 = League.playerList().get(x);
-      teamPlayer1.setIsOwned();
-      League.playerList().set(x, teamPlayer1);
-   }
-   
-   public void setTeamPlayer2(int x)
-   {
-      teamPlayer2 = League.playerList().get(x);
-      teamPlayer2.setIsOwned();
-      League.playerList().set(x, teamPlayer2);
-   }
-   
    public void setTeamPlayer(int x, int y)
    {
       roster.set(x, League.playerList().get(y));
@@ -159,12 +118,6 @@ public class Team
    {
       numBench = x;
    }
-   
-   public Player getPlayer(int y)
-   {
-      return League.playerList().get(y);
-   }
-   
    
    public void teamToString()
    {
