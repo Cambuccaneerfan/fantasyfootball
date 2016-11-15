@@ -2,18 +2,25 @@ import java.util.ArrayList;
 
 public class League {
 	private String leagueName;
+	private int numTeams;
+	private String scoringRules;
 	
-	private Team team1;
-	private Team team2;
+	private ArrayList<Team> teamList;
 	
 	private static ArrayList<Player> playList;
+	
+	// Commissioner should be able to create a league, and establish the settings for the league. 
+    // The commissioner must be able to set the league name, number of teams in the league,
+    // scoring rules, maximum players per team, starting players per team, the managers in the league, 
+    // and also be able to enter draft results.
 	
 	public League()
 	{
 		leagueName = "";
+		numTeams = 0;
+		scoringRules = "";
 		
-		team1 = new Team();
-		team2 = new Team();
+		teamList = new ArrayList<Team>();
 		
 		playList = PlayerList.playerList();
 	}
@@ -23,14 +30,24 @@ public class League {
 		return leagueName;
 	}
 	
-	public Team getTeam1()
+	public int getNumTeams()
 	{
-		return team1;
+		return numTeams;
 	}
 	
-	public Team getTeam2()
+	public String getScoringRules()
 	{
-		return team2;
+		return scoringRules;
+	}
+	
+	public ArrayList<Team> getTeamList()
+	{
+		return teamList;
+	}
+	
+	public Team getTeam(int x)
+	{
+		return teamList.get(x);
 	}
 	
 	public static ArrayList<Player> playerList()
@@ -41,6 +58,16 @@ public class League {
 	public void setLeagueName(String lName)
 	{
 		leagueName = lName;
+	}
+	
+	public void setNumTeams(int x)
+	{
+		numTeams = x;
+	}
+	
+	public void setScoringRules(String rules)
+	{
+		scoringRules = rules;
 	}
 	
 	public void getFreeAgents()
