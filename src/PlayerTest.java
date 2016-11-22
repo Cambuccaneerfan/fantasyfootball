@@ -97,6 +97,75 @@ public class PlayerTest
           System.out.println("");
       }
       
+      System.out.println("What team number are you managing?");
+      int teamBeingManaged = keyboard.nextInt() - 1;
+      
+      int playerBeingManaged;
+      int choice;
+      
+      do
+      {
+    	  theLeague.getTeam(teamBeingManaged).teamToString();
+            
+    	  do
+    	  {
+    		  System.out.println("You can start/bench a player, add/drop a player, or propose a trade.");
+    		  System.out.println("What player number would you like to edit? Enter 99 to add a player");
+    		  playerBeingManaged = keyboard.nextInt();
+    	  } while (theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged) == null);
+      
+    	  System.out.println(theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).playerToString());
+    	  System.out.println("1 Start");
+    	  System.out.println("2 Bench");
+    	  System.out.println("3 Drop");
+    	  System.out.println("4 Trade");
+    	  choice = keyboard.nextInt();
+    	  
+    	  if (choice == 1)
+    	  {
+    		  if (theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).getPosition().equals("QB"))
+    		  {
+    			  System.out.println("QB");
+    			  theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).setStartingQB();
+    		  }
+    		  else if (theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).getPosition().equals("WR"))
+    		  {
+    			  theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).setStartingWR();
+    		  }
+    		  else if (theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).getPosition().equals("RB"))
+    		  {
+    			  theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).setStartingRB();
+    		  }
+    		  else if (theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).getPosition().equals("TE"))
+    		  {
+    			  theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).setStartingTE();
+    		  }
+    		  else
+    		  {
+    			  System.out.println("unknown position");
+    		  }
+    	  }
+    	  else if (choice == 2)
+    	  {
+    		  theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).setBench();
+    	  }
+    	  else if (choice == 3)
+    	  {
+    		  theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).setFreeAgent();
+    		  League.playerList().set(theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged).getId(), theLeague.getTeam(teamBeingManaged).getTeamPlayer(playerBeingManaged));
+    		  theLeague.getTeam(teamBeingManaged).getRoster().remove(playerBeingManaged);
+    	  }
+    	  else if (choice == 4)
+    	  {
+    		  System.out.println("under construction");
+    	  }
+    	  else
+    	  {
+    		  System.out.println("incorrect entry");
+    	  }
+    	  
+      } while (choice != 88);
+      
       if(keyboard != null) 
       {
     	  keyboard.close();

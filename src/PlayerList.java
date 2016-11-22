@@ -8,6 +8,7 @@ public class PlayerList
    public static ArrayList<Player> playerList()
    {
       ArrayList<Player> playList = new ArrayList<Player>();
+      int i = 0;
       
       //add players in file playerList.txt to array list
       Scanner playerScan = null;
@@ -41,7 +42,8 @@ public class PlayerList
          {
         	 aPlayer.setNflTeam(playerScan.next());
          }
-         
+         aPlayer.setId(i);
+         i++;
          playList.add(aPlayer);
       }
       

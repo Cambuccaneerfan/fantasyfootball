@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Team
+public class Team implements Serializable
 {
    private String managerName;
    private String teamName;
@@ -46,6 +47,11 @@ public class Team
    {
       return roster;
    }
+   
+   public Player getTeamPlayer(int x)
+	{
+		return roster.get(x);
+	}
    
    public static int getNumQB()
    {
@@ -122,9 +128,14 @@ public class Team
    public void teamToString()
    {
 	   System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
-	   for (int x = 0; x < getMaxPlayers(); x++)
+	   for (int x = 0; x < roster.size(); x++)
   	   {
-		   System.out.println(roster.get(x).playerToString());
+		   System.out.println(x + " " + roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
   	   }
+   }
+   
+   public void teamManNameToString()
+   {
+	   System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
    }
 }

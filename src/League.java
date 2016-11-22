@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class League {
+public class League implements Serializable{
 	private String leagueName;
 	private int numTeams;
 	private String scoringRules;
@@ -70,13 +71,23 @@ public class League {
 		scoringRules = rules;
 	}
 	
+	public void setTeamList(ArrayList<Team> tList)
+	{
+		teamList = tList;
+	}
+	
+	public void setPlayerList(ArrayList<Player> pList)
+	{
+		playList = pList;
+	}
+	
 	public void getFreeAgents()
 	{
 		for (int x = 0; x < playerList().size(); x++)
 	    { 
 	    	if (playerList().get(x).getIsOwned() == false)
 	    	{
-	    		System.out.println(x + " " + playerList().get(x).playerToString());
+	    		System.out.println(playerList().get(x).getId() + " " + playerList().get(x).playerToString());
 	    	}
 	    }
 	}
