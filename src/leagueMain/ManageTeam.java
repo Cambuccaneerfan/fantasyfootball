@@ -22,7 +22,7 @@ public class ManageTeam {
 		
 		for (int x = 0; x < theLeague.getNumTeams(); x++)
 	    {
-			System.out.println("Team number: " + (x));
+			System.out.println("Team number: " + (x+1));
 	        theLeague.getTeam(x).teamManNameToString();
 	        System.out.println("");
 	    }
@@ -36,8 +36,9 @@ public class ManageTeam {
 	    		System.out.println("What team number are you managing?");
 	    	}
 	    	teamChoice = keyboard.nextInt();
-	    } while (teamChoice < 0 || teamChoice > theLeague.getNumTeams()-1);
-	      
+	    } while (teamChoice < 1 || teamChoice > theLeague.getNumTeams());
+	    teamChoice -= 1;  
+		
 	    int menuChoice;
 	    do {
 	    	do{

@@ -174,7 +174,7 @@ public class League implements Serializable{
 	    { 
 	    	if (playerList().get(x).getIsOwned() == false)
 	    	{
-	    		System.out.println(playerList().get(x).getId() + " - " + playerList().get(x).playerToString());
+	    		System.out.println((playerList().get(x).getId() + 1) + " - " + playerList().get(x).playerToString());
 	    	}
 	    }
 	}
@@ -191,7 +191,7 @@ public class League implements Serializable{
 	    	 
 	    	if (playerList().get(y).getIsOwned() == false)
 	    	{
-	    		System.out.println(y + " " + playerList().get(y).playerToString());
+	    		System.out.println((y+1) + " " + playerList().get(y).playerToString());
 	    		y++;
 	    	}
 	    }

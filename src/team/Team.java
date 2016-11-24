@@ -123,7 +123,7 @@ public class Team implements Serializable
 	   System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
 	   for (int x = 0; x < roster.size(); x++)
   	   {
-		   System.out.println(x + " - " + roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
+		   System.out.println((x+1) + " - " + roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
   	   }
    }
    

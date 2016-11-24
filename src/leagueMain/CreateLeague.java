@@ -146,13 +146,13 @@ public class CreateLeague {
 	    	  {
 	    		  if (x == 0)
 	    		  {
-	    			  System.out.println("As the creator of the League, you will manage Team Number " + x + ", ");
+	    			  System.out.println("As the creator of the League, you will manage Team Number " + (x+1) + ", ");
 	    			  System.out.println("and act as Commissioner. What is your name? (max 32 characters)");
 		    		  theLeague.getTeam(x).setManagerName(keyboard.nextLine());
 	    		  }
 	    		  else
 	    		  {
-	    			  System.out.println("Who is managing Team Number " + (x) + "? (max 32 characters)");
+	    			  System.out.println("Who is managing Team Number " + (x+1) + "? (max 32 characters)");
 	    			  theLeague.getTeam(x).setManagerName(keyboard.nextLine());
 	    		  }
 	    	  }
@@ -190,34 +190,35 @@ public class CreateLeague {
 	    			  }
 	    			  
 	    			  System.out.println("Which player did " + theLeague.getTeam(y).getManagerName() + 
-		    				  " draft? (enter number between 0 and " + (theLeague.playerList().size()-1) + ")");
+		    				  " draft? (enter number between 1 and " + (theLeague.playerList().size()) + ")");
 	    			  System.out.println("Enter -1 to view all available players");
 	    			  System.out.println("Enter -2 to view the top 20 available players");
 	    	    	  while(!keyboard.hasNextInt()) // ask again if anything other than an integer is entered
 	    	    	  {
 	    	    		  keyboard.next();
 	    	    		  System.out.println("Which player did " + theLeague.getTeam(y).getManagerName() + 
-	    	    				  " draft? (enter number between 0 and " + (theLeague.playerList().size()-1) + ")");
+	    	    				  " draft? (enter number between 1 and " + (theLeague.playerList().size()) + ")");
 	    	    		  System.out.println("Enter -1 to view all available players");
 		    			  System.out.println("Enter -2 to view the top 20 available players");
 	    	    	  }
 	    	    	  draftChoice = keyboard.nextInt();
 
-	    			  if (draftChoice >= 0 && draftChoice <= theLeague.playerList().size()-1)
+	    			  if (draftChoice >= 1 && draftChoice <= theLeague.playerList().size())
 	    			  {
-	    				  if (theLeague.getPlayer(draftChoice).getIsOwned())
+	    				  if (theLeague.getPlayer(draftChoice-1).getIsOwned())
 		    			  {
-		    				  System.out.println(theLeague.getPlayer(draftChoice).playerToString() + " has already been drafted");
+		    				  System.out.println(theLeague.getPlayer(draftChoice-1).playerToString() + " has already been drafted");
 		    			  }
 	    				  else
 	    				  {
 	    					  System.out.println(theLeague.getTeam(y).getManagerName() + " has selected " + 
-	    							  theLeague.getPlayer(draftChoice).playerToString());
+	    							  theLeague.getPlayer(draftChoice-1).playerToString());
 	    				  }
 	    			  }
-	    	      } while (draftChoice < 0 || draftChoice > theLeague.playerList().size()-1 || 
-	    	    		  theLeague.getPlayer(draftChoice).getIsOwned());
-	    		  	    		  
+	    	      } while (draftChoice < 1 || draftChoice > theLeague.playerList().size() || 
+	    	    		  theLeague.getPlayer(draftChoice-1).getIsOwned());
+	    		  
+	    		  draftChoice -= 1;	    		  
 	    	      theLeague.setTeamPlayer(y, x, draftChoice);
 	          }
 	      }
@@ -231,7 +232,7 @@ public class CreateLeague {
 	      
 	      for (int x = 0; x < theLeague.getNumTeams(); x++)
 	      {
-	    	  System.out.println("Team Number: " + (x));
+	    	  System.out.println("Team Number: " + (x+1));
 	          theLeague.getTeam(x).teamToString();
 	          System.out.println("");
 	      }

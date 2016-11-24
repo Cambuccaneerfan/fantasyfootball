@@ -22,7 +22,8 @@ public class ManageTeamOps {
 	    		System.out.println("Select a player to move from the bench to starting or vice versa:");
 	    	}
   		  	playerChoice = keyboard.nextInt();
-  	  	} while (playerChoice < 0 || playerChoice > theLeague.getTeam(teamChoice).getRoster().size()-1);
+  	  	} while (playerChoice < 1 || playerChoice > theLeague.getTeam(teamChoice).getRoster().size());
+		playerChoice -= 1;
 		
 		if (theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).startingIndicator().equals("BENCH"))
 		{
@@ -73,7 +74,8 @@ public class ManageTeamOps {
 	    		System.out.println("Select a player that you would like to drop:");
 	    	}
   		  	playerChoice = keyboard.nextInt();
-  	  	} while (playerChoice < 0 || playerChoice > theLeague.getTeam(teamChoice).getRoster().size()-1);
+  	  	} while (playerChoice < 1 || playerChoice > theLeague.getTeam(teamChoice).getRoster().size());
+		playerChoice -= 1;
 		
 		theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setFreeAgent();
 		theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setBench();
@@ -95,7 +97,13 @@ public class ManageTeamOps {
 		System.out.println("");
 		System.out.println("---Add Player---");
 		System.out.println("");
+		System.out.println("-All Free Agents-");
+		System.out.println("");
 	    theLeague.getFreeAgents();
+	    System.out.println("");
+	    System.out.println("-Top 20 Free Agents-");
+		System.out.println("");
+	    theLeague.getFreeAgents(20);
 	    
 	    int playerChoice;
 	    do {
@@ -109,9 +117,10 @@ public class ManageTeamOps {
 	    	}
   		  	playerChoice = keyboard.nextInt();
   		  	
-  		  if (playerChoice >= 0 && playerChoice <= theLeague.playerList().size()-1)
+  		  if (playerChoice >= 1 && playerChoice <= theLeague.playerList().size())
 		  {
-			  if (theLeague.getPlayer(playerChoice).getIsOwned())
+  			  playerChoice -= 1;
+  			  if (theLeague.getPlayer(playerChoice).getIsOwned())
 			  {
 				  System.out.println("");
 				  System.out.println(theLeague.getPlayer(playerChoice).playerToString() + " is not available");
@@ -122,7 +131,8 @@ public class ManageTeamOps {
 				  System.out.println("***You have added " + theLeague.getPlayer(playerChoice).playerToString() + "***");
 			  }
 		  }
-  	  	} while (playerChoice < 0 || playerChoice > theLeague.playerList().size()-1 || theLeague.getPlayer(playerChoice).getIsOwned());
+  	  	} while (playerChoice < 1 || playerChoice > theLeague.playerList().size() || theLeague.getPlayer(playerChoice).getIsOwned());
+	    
 	    theLeague.getTeam(teamChoice).getRoster().add(theLeague.getTeam(teamChoice).getRoster().size(), theLeague.getPlayer(playerChoice));
 	}
 	
