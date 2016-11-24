@@ -17,6 +17,8 @@ public class CreateLeague {
 	      // (3) scoring rules, (4) maximum players per team, (4) starting players per team,  
 	      // (5) the managers in the league, and also be able to (6) enter draft results. 
 	      
+	      System.out.println("");
+	      
 	      // (1) set the league name
 	      while (theLeague.getLeagueName().isEmpty() || theLeague.getLeagueName().length() > 32)
 	      {
@@ -205,7 +207,7 @@ public class CreateLeague {
 	    			  {
 	    				  if (theLeague.getPlayer(draftChoice).getIsOwned())
 		    			  {
-		    				  System.out.println("You have selected a player that has already been drafted");
+		    				  System.out.println(theLeague.getPlayer(draftChoice).playerToString() + " has already been drafted");
 		    			  }
 	    				  else
 	    				  {
@@ -219,11 +221,6 @@ public class CreateLeague {
 	    	      theLeague.setTeamPlayer(y, x, draftChoice);
 	          }
 	      }
-	      
-	      System.out.println("");
-	      
-	      System.out.println("Top 10 Free Agents After the Draft:");
-	      theLeague.getFreeAgents(10);
 	      
 	      System.out.println("");
 	      System.out.println("////////////////////////////////");

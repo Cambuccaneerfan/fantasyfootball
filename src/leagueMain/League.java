@@ -174,7 +174,7 @@ public class League implements Serializable{
 	    { 
 	    	if (playerList().get(x).getIsOwned() == false)
 	    	{
-	    		System.out.println(playerList().get(x).getId() + " " + playerList().get(x).playerToString());
+	    		System.out.println(playerList().get(x).getId() + " - " + playerList().get(x).playerToString());
 	    	}
 	    }
 	}

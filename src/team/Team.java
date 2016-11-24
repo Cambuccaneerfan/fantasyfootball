@@ -12,6 +12,9 @@ public class Team implements Serializable
    
    private String proposedTrade;
    private String pendingTrade;
+   
+   private int score;
+   private String record;
 
    private ArrayList<Player> roster;
    
@@ -29,6 +32,9 @@ public class Team implements Serializable
 	  
 	  proposedTrade = "";
 	  pendingTrade = "";
+	  
+	  score = 0;
+	  record = "";
 	  
 	  roster = new ArrayList<Player>();
    }
@@ -51,6 +57,16 @@ public class Team implements Serializable
    public String getPendingTrade()
    {
       return pendingTrade;
+   }
+   
+   public int getScore()
+   {
+      return score;
+   }
+   
+   public String getRecord()
+   {
+      return record;
    }
    
    public ArrayList<Player> getRoster()
@@ -83,12 +99,31 @@ public class Team implements Serializable
       pendingTrade = trade;
    }
    
+   public void setScore(int sco)
+   {
+      score = sco;
+   }
+   
+   public void setRecord(String rec)
+   {
+      record = rec;
+   }
+   
    public void teamToString()
    {
 	   System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
 	   for (int x = 0; x < roster.size(); x++)
   	   {
-		   System.out.println(x + " " + roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
+		   System.out.println(roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
+  	   }
+   }
+   
+   public void teamToStringNum()
+   {
+	   System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
+	   for (int x = 0; x < roster.size(); x++)
+  	   {
+		   System.out.println(x + " - " + roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
   	   }
    }
    

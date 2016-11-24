@@ -14,6 +14,9 @@ public class ManageTeam {
 		Serializer serializer = new Serializer();
 		Scanner keyboard = new Scanner(System.in);
 		
+		System.out.println("");
+		System.out.println("---Continue League---");
+		System.out.println("");
 		System.out.println("League name: " + theLeague.getLeagueName());
 	    System.out.println("");
 		
@@ -24,76 +27,112 @@ public class ManageTeam {
 	        System.out.println("");
 	    }
 		
-		System.out.println("What team number are you managing?");
-	      int teamChoice = keyboard.nextInt();
+		int teamChoice;
+		do {
+			System.out.println("What team number are you managing?");
+	    	while(!keyboard.hasNextInt()) // ask again if anything other than an integer is entered
+	    	{
+	    		keyboard.next();
+	    		System.out.println("What team number are you managing?");
+	    	}
+	    	teamChoice = keyboard.nextInt();
+	    } while (teamChoice < 0 || teamChoice > theLeague.getNumTeams()-1);
 	      
-	      int choice;
-	      
-	      do
-	      {
-	    	  theLeague.getTeam(teamChoice).teamToString();
+	    int menuChoice;
+	    do {
+	    	do{
+	    		System.out.println("");
+	    		System.out.println("---Team Management---");
+	    		theLeague.getTeam(teamChoice).teamToString();
 	    	  
-	    	  if (!theLeague.getTeam(teamChoice).getPendingTrade().isEmpty())
-	    	  {
-	    		  System.out.println("");
-	    		  System.out.println("***A trade has been accepted.***");
-	    	  }
+	    		if (!theLeague.getTeam(teamChoice).getPendingTrade().isEmpty())
+	    		{
+	    			System.out.println("");
+	    			System.out.println("***A trade has been accepted.***");
+	    		}
 	    	  
-	    	  if (!theLeague.getTeam(teamChoice).getProposedTrade().isEmpty())
-	    	  {
-	    		  System.out.println("");
-	    		  System.out.println("***There has been a trade proposed to you.***");
-	    	  }
+	    		if (!theLeague.getTeam(teamChoice).getProposedTrade().isEmpty())
+	    		{
+	    			System.out.println("");
+	    			System.out.println("***There has been a trade proposed to you.***");
+	    		}
 	            
-	    	  System.out.println("");
-	    	  System.out.println("1 - Edit Lineup");
-	    	  System.out.println("2 - Drop Player");
-	    	  System.out.println("3 - Add Player");
-	    	  System.out.println("4 - Propose Trade");
-	    	  System.out.println("5 - Review Trade Offer");
-	    	  System.out.println("6 - View Accepted Trade");
-	    	  System.out.println("7 - Change Team Name");
-	    	  System.out.println("8 - Exit to Main Menu");
-	    	  choice = keyboard.nextInt();
+	    		System.out.println("");
+	    		System.out.println("1 - Edit Lineup");
+	    		System.out.println("2 - Drop Player");
+	    		System.out.println("3 - Add Player");
+	    		System.out.println("4 - Propose Trade");
+	    		System.out.println("5 - Review Trade Offer");
+	    		System.out.println("6 - Change Team Name");
+	    		System.out.println("7 - View League Settings");
+	    		System.out.println("8 - View Scores and Standings");
+	    		System.out.println("9 - Commissioner Tools (edit standings, process trades)");
+	    		System.out.println("0 - Exit to Main Menu");
+	    		while(!keyboard.hasNextInt()) // ask again if anything other than an integer is entered
+		    	{
+		    		keyboard.next();
+		    		System.out.println("");
+		    		System.out.println("Please enter a valid menu option.");
+		    	}
+	    		menuChoice = keyboard.nextInt();
+	    		if (menuChoice < 0 || menuChoice > 9)
+	    		{
+	    			System.out.println("");
+	    			System.out.println("Please enter a valid menu option.");
+	    		}
+	    	} while (menuChoice < 0 || menuChoice > 9);
 	    	  
-	    	  switch (choice) {
-	    	  case 1:
-	    		  ManageTeamOps.editLineup(theLeague, teamChoice);
-	    		  break;
-	    	  case 2:
-	    		  ManageTeamOps.dropPlayer(theLeague, teamChoice);
-	    		  break;
-	    	  case 3:
-	    		  ManageTeamOps.addPlayer(theLeague, teamChoice);
-	    		  break;
-	    	  case 4:
-	    		  ManageTeamOps.proposeTrade(theLeague, teamChoice);
-	    		  break;
-	    	  case 5:
-	    		  ManageTeamOps.reviewTrade(theLeague, teamChoice);
-	    		  break;
-	    	  case 6:
-	    		  System.out.println(theLeague.getTeam(teamChoice).getPendingTrade());
-	    		  break;
-	    	  case 7:
-	    		  ManageTeamOps.editTeamName(theLeague, teamChoice);
-	    		  break;
-	    	  case 8:
-	    		  FirstPage.main(args);
-	    		  break;
-	    	  default: 
-	    		  break;
-	    	  }
+	    	switch (menuChoice) {
+	    	case 1:
+	    		ManageTeamOps.editLineup(theLeague, teamChoice);
+	    		break;
+	    	case 2:
+	    		ManageTeamOps.dropPlayer(theLeague, teamChoice);
+	    		break;
+	    	case 3:
+	    		ManageTeamOps.addPlayer(theLeague, teamChoice);
+	    		break;
+	    	case 4:
+	    		ManageTeamOps.proposeTrade(theLeague, teamChoice);
+	    		break;
+	    	case 5:
+	    		ManageTeamOps.reviewTrade(theLeague, teamChoice);
+	    		break;
+	    	case 6:
+	    		ManageTeamOps.editTeamName(theLeague, teamChoice);
+	    		break;
+	    	case 7:
+	    		ManageTeamOps.viewSettings(theLeague);
+	    		break;
+	    	case 8:
+	    		ManageTeamOps.viewStandings(theLeague);
+	    		break;
+	    	case 9:
+	    		if (teamChoice == 0)
+	    		{
+	    			ManageTeamOps.commissionerTools(theLeague);
+	    		}
+	    		else
+	    		{
+	    			System.out.println("");
+	    			System.out.println("You must be the commissioner to access Commissioner Tools");
+	    		}
+	    		break;
+	    	case 0:
+	    		FirstPage.main(args);
+	    		break;
+	    	default: 
+	    		break;
+	    	}
 	    	  
-	    	  serializer.serializeLeague(theLeague.getLeagueName(), theLeague.getNumTeams(), theLeague.getScoringRules(), 
-					  theLeague.getNumQB(), theLeague.getNumWR(), theLeague.getNumRB(), theLeague.getNumTE(), 
-					  theLeague.getNumBench(), theLeague.getTeamList(), theLeague.playerList());
-	    	  
-	      } while (choice != 88);
+	    	serializer.serializeLeague(theLeague.getLeagueName(), theLeague.getNumTeams(), theLeague.getScoringRules(), 
+	    			theLeague.getNumQB(), theLeague.getNumWR(), theLeague.getNumRB(), theLeague.getNumTE(), 
+					theLeague.getNumBench(), theLeague.getTeamList(), theLeague.playerList());
+	    } while (menuChoice != 0);
 	      
-	      if(keyboard != null) 
-	      {
-	    	  keyboard.close();
-	      }
+	    if(keyboard != null) 
+	    {
+	    	keyboard.close();
+	    }
 	}
 }

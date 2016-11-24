@@ -31,8 +31,7 @@ public class Serializer {
 		oos.writeObject(theLeague);
 		oos.close();
 		System.out.println("");
-		System.out.println("***League Saved***");
-		System.out.println("");
+		System.out.println("___LEAGUE SAVED___");
 
 	   }catch(Exception ex){
 		   ex.printStackTrace();
