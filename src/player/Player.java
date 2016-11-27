@@ -8,14 +8,8 @@ public class Player implements Serializable {
 	private String lastName;
 	private String nflTeam;
 	private boolean isOwned;
-
-	private boolean isStartingQB;
-	private boolean isStartingWR;
-	private boolean isStartingRB;
-	private boolean isStartingTE;
-
+	private boolean isStarting;
 	private int id;
-
 	public static final long serialVersionUID = 1L;
 
 	public Player() {
@@ -24,12 +18,7 @@ public class Player implements Serializable {
 		lastName = "";
 		nflTeam = "";
 		isOwned = false;
-
-		isStartingQB = false;
-		isStartingWR = false;
-		isStartingRB = false;
-		isStartingTE = false;
-
+		isStarting = false;
 		id = -1;
 	}
 
@@ -53,20 +42,8 @@ public class Player implements Serializable {
 		return isOwned;
 	}
 
-	public boolean getIsStartingQB() {
-		return isStartingQB;
-	}
-
-	public boolean getIsStartingWR() {
-		return isStartingWR;
-	}
-
-	public boolean getIsStartingRB() {
-		return isStartingRB;
-	}
-
-	public boolean getIsStartingTE() {
-		return isStartingTE;
+	public boolean getIsStarting() {
+		return isStarting;
 	}
 
 	public int getId() {
@@ -74,10 +51,9 @@ public class Player implements Serializable {
 	}
 
 	public String startingIndicator() {
-		if (isStartingQB || isStartingWR || isStartingRB || isStartingTE) {
+		if (isStarting) {
 			return "~~START~~";
 		}
-
 		return "BENCH";
 	}
 
@@ -103,29 +79,15 @@ public class Player implements Serializable {
 
 	public void setFreeAgent() {
 		isOwned = false;
+		isStarting = false;
 	}
 
-	public void setStartingQB() {
-		isStartingQB = true;
-	}
-
-	public void setStartingWR() {
-		isStartingWR = true;
-	}
-
-	public void setStartingRB() {
-		isStartingRB = true;
-	}
-
-	public void setStartingTE() {
-		isStartingTE = true;
+	public void setStarting() {
+		isStarting = true;
 	}
 
 	public void setBench() {
-		isStartingQB = false;
-		isStartingWR = false;
-		isStartingRB = false;
-		isStartingTE = false;
+		isStarting = false;
 	}
 
 	public void setId(int x) {

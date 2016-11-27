@@ -12,17 +12,14 @@ public class League implements Serializable {
 	private String leagueName;
 	private int numTeams;
 	private String scoringRules;
-
-	private int numQB;
-	private int numWR;
-	private int numRB;
-	private int numTE;
-	private int numBench;
-
+	private String pendingTrade;
+	private int maxQB;
+	private int maxWR;
+	private int maxRB;
+	private int maxTE;
+	private int maxBench;
 	private ArrayList<Team> teamList;
-
 	private ArrayList<Player> playList;
-
 	public static final long serialVersionUID = 1L;
 
 	// Commissioner should be able to create a league, and establish the
@@ -37,16 +34,14 @@ public class League implements Serializable {
 		leagueName = "";
 		numTeams = 0;
 		scoringRules = "";
-
-		numQB = 0;
-		numWR = 0;
-		numRB = 0;
-		numTE = 0;
-		numBench = 0;
-
+		pendingTrade = "";
+		maxQB = 0;
+		maxWR = 0;
+		maxRB = 0;
+		maxTE = 0;
+		maxBench = 0;
 		teamList = new ArrayList<Team>();
-
-		playList = PlayerList.playerList();
+		playList = new ArrayList<Player>();
 	}
 
 	public String getLeagueName() {
@@ -61,28 +56,45 @@ public class League implements Serializable {
 		return scoringRules;
 	}
 
-	public int getNumQB() {
-		return numQB;
+	public String getPendingTrade() {
+		return pendingTrade;
 	}
 
-	public int getNumWR() {
-		return numWR;
+	public int getMaxQB() {
+		return maxQB;
 	}
 
-	public int getNumRB() {
-		return numRB;
+	public int getMaxWR() {
+		return maxWR;
 	}
 
-	public int getNumTE() {
-		return numTE;
+	public int getMaxRB() {
+		return maxRB;
 	}
 
-	public int getNumBench() {
-		return numBench;
+	public int getMaxTE() {
+		return maxTE;
+	}
+
+	public int getMaxBench() {
+		return maxBench;
 	}
 
 	public int getMaxPlayers() {
-		return numQB + numWR + numRB + numTE + numBench;
+		return maxQB + maxWR + maxRB + maxTE + maxBench;
+	}
+	
+	public int getPositionMax(String pos) {
+		if (pos.equals("QB")) {
+			return maxQB;
+		} else if (pos.equals("WR")) {
+			return maxWR;
+		} else if (pos.equals("RB")) {
+			return maxRB;
+		} else if (pos.equals("TE")) {
+			return maxTE;
+		}
+		return 0;
 	}
 
 	public ArrayList<Team> getTeamList() {
@@ -97,10 +109,6 @@ public class League implements Serializable {
 		return playList;
 	}
 
-	public Player getPlayer(int x) {
-		return playList.get(x);
-	}
-
 	public void setLeagueName(String lName) {
 		leagueName = lName;
 	}
@@ -113,24 +121,28 @@ public class League implements Serializable {
 		scoringRules = rules;
 	}
 
-	public void setNumQB(int x) {
-		numQB = x;
+	public void setPendingTrade(String trade) {
+		pendingTrade = trade;
 	}
 
-	public void setNumWR(int x) {
-		numWR = x;
+	public void setMaxQB(int x) {
+		maxQB = x;
 	}
 
-	public void setNumRB(int x) {
-		numRB = x;
+	public void setMaxWR(int x) {
+		maxWR = x;
 	}
 
-	public void setNumTE(int x) {
-		numTE = x;
+	public void setMaxRB(int x) {
+		maxRB = x;
 	}
 
-	public void setNumBench(int x) {
-		numBench = x;
+	public void setMaxTE(int x) {
+		maxTE = x;
+	}
+
+	public void setMaxBench(int x) {
+		maxBench = x;
 	}
 
 	public void setTeamList(ArrayList<Team> tList) {
@@ -140,17 +152,27 @@ public class League implements Serializable {
 	public void setPlayerList(ArrayList<Player> pList) {
 		playList = pList;
 	}
+	
+	public void createTeamList() {
+		for (int x = 0; x < getNumTeams(); x++) {
+			Team aTeam = new Team();
+			getTeamList().add(aTeam);
+		}
+	}
+	
+	public void createPlayerList() {
+		playList = PlayerList.create();
+	}
 
-	public void setTeamPlayer(int teamNum, int rosterSpot, int playerListSpot) {
-		getTeam(teamNum).getRoster().set(rosterSpot, playerList().get(playerListSpot));
-		getTeam(teamNum).getRoster().get(rosterSpot).setIsOwned();
-		playerList().set(playerListSpot, getTeam(teamNum).getRoster().get(rosterSpot));
+	public void setDraftResult(int teamNum, int playerListSpot) {
+		playerList().get(playerListSpot).setIsOwned();
+		getTeam(teamNum).getRoster().add(playerList().get(playerListSpot));
 	}
 
 	public void getFreeAgents() {
 		for (int x = 0; x < playerList().size(); x++) {
 			if (playerList().get(x).getIsOwned() == false) {
-				System.out.println((playerList().get(x).getId() + 1) + " - " + playerList().get(x).playerToString());
+				System.out.println((x + 1) + " - " + playerList().get(x).playerToString());
 			}
 		}
 	}
@@ -161,11 +183,34 @@ public class League implements Serializable {
 			while (playerList().get(y).getIsOwned() == true) {
 				y++;
 			}
-
 			if (playerList().get(y).getIsOwned() == false) {
 				System.out.println((y + 1) + " " + playerList().get(y).playerToString());
 				y++;
 			}
+		}
+	}
+	public void viewSettings() {
+		System.out.println("");
+		System.out.println("---League Settings---");
+		System.out.println("League Name: " + getLeagueName());
+		System.out.println("Scoring Rules: " + getScoringRules());
+		System.out.println("Starting Positions: (" + getMaxPlayers() + " player maximum)");
+		System.out.println(getMaxQB() + " QB");
+		System.out.println(getMaxWR() + " WR");
+		System.out.println(getMaxRB() + " RB");
+		System.out.println(getMaxTE() + " TE");
+		System.out.println(getMaxBench() + " Bench");
+	}
+
+	public void viewStandings() {
+		System.out.println("");
+		System.out.println("---League Standings---");
+		for (int x = 0; x < getNumTeams(); x++) {
+			System.out.println("");
+			getTeam(x).teamManNameToString();
+			;
+			System.out.println("Record: " + getTeam(x).getRecord());
+			System.out.println("This week's score: " + getTeam(x).getScore());
 		}
 	}
 }

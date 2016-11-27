@@ -6,13 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class PlayerList {
-	public static ArrayList<Player> playerList() {
-		ArrayList<Player> playList = new ArrayList<Player>();
-		int i = 0;
-
-		// add players in file playerList.txt to array list
+	public static ArrayList<Player> create() {
 		Scanner playerScan = null;
-
 		try {
 			playerScan = new Scanner(new FileInputStream("playerList.txt"));
 		} catch (FileNotFoundException e) {
@@ -20,11 +15,13 @@ public class PlayerList {
 			System.exit(0);
 		}
 
+		// add players in file playerList.txt to arraylist
+		ArrayList<Player> playList = new ArrayList<Player>();
+		int i = 0;
 		while (playerScan.hasNext()) {
 			Player aPlayer = new Player();
 
 			aPlayer.setPosition(playerScan.next());
-			aPlayer.setFreeAgent();
 
 			if (playerScan.hasNext()) {
 				aPlayer.setFirstName(playerScan.next());
@@ -39,7 +36,6 @@ public class PlayerList {
 			i++;
 			playList.add(aPlayer);
 		}
-
 		return playList;
 	}
 }

@@ -2,90 +2,69 @@ package league;
 
 import java.util.Scanner;
 
-public class ManageTeamOps {
-	
-	public static void editLineup(League theLeague, int teamChoice) {
-		Scanner keyboard = new Scanner(System.in);
-		int playerChoice;
+import player.Player;
+import team.Team;
 
+public class ManageTeamOps {
+	public static void editLineup(League theLeague, Team theTeam, Scanner keyboard) {
+		
 		System.out.println("");
 		System.out.println("---Edit Lineup---");
 		System.out.println("");
-		theLeague.getTeam(teamChoice).teamToStringNum();
+		theTeam.teamToStringNum();
 		System.out.println("");
-
+		
+		int playerChoice;
 		do {
 			System.out.println("Select a player to move from the bench to starting or vice versa:");
-			while (!keyboard.hasNextInt()) // ask again if anything other than
-											// an integer is entered
-			{
+			while (!keyboard.hasNextInt()) {
 				keyboard.next();
 				System.out.println("Select a player to move from the bench to starting or vice versa:");
 			}
 			playerChoice = keyboard.nextInt();
-		} while (playerChoice < 1 || playerChoice > theLeague.getTeam(teamChoice).getRoster().size());
+		} while (playerChoice < 1 || playerChoice > theTeam.getRoster().size());
 		playerChoice -= 1;
 
-		if (theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).startingIndicator().equals("BENCH")) {
-			if (theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).getPosition().equals("QB")
-					&& theLeague.getTeam(teamChoice).countQB() < theLeague.getNumQB()) {
-				theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setStartingQB();
-			} else if (theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).getPosition().equals("WR")
-					&& theLeague.getTeam(teamChoice).countWR() < theLeague.getNumWR()) {
-				theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setStartingWR();
-			} else if (theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).getPosition().equals("RB")
-					&& theLeague.getTeam(teamChoice).countRB() < theLeague.getNumRB()) {
-				theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setStartingRB();
-			} else if (theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).getPosition().equals("TE")
-					&& theLeague.getTeam(teamChoice).countTE() < theLeague.getNumTE()) {
-				theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setStartingTE();
+		Player thePlayer = theTeam.getTeamPlayer(playerChoice);
+		String position = thePlayer.getPosition();
+		if (!thePlayer.getIsStarting()) {
+			if (theTeam.starterCount(position) < theLeague.getPositionMax(position)) {
+				thePlayer.setStarting();
 			} else {
 				System.out.println("--You have the maximum number of starters at the "
-						+ theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).getPosition() + " position--");
+						+ position + " position--");
 			}
-		} else if (theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).startingIndicator().equals("~~START~~")) {
-			theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setBench();
+		} else if (thePlayer.getIsStarting()) {
+			thePlayer.setBench();
 		}
 	}
 
-	public static void dropPlayer(League theLeague, int teamChoice) {
-		Scanner keyboard = new Scanner(System.in);
+	public static void dropPlayer(League theLeague, Team theTeam, Scanner keyboard) {
 		int playerChoice;
 
 		System.out.println("");
 		System.out.println("---Drop Player---");
 		System.out.println("");
-		theLeague.getTeam(teamChoice).teamToStringNum();
-
+		theTeam.teamToStringNum();
 		do {
 			System.out.println("");
 			System.out.println("Select a player that you would like to drop:");
-			while (!keyboard.hasNextInt()) // ask again if anything other than
-											// an integer is entered
-			{
+			while (!keyboard.hasNextInt()) {
 				keyboard.next();
-				System.out.println("");
-				System.out.println("Select a player that you would like to drop:");
+				continue;
 			}
 			playerChoice = keyboard.nextInt();
-		} while (playerChoice < 1 || playerChoice > theLeague.getTeam(teamChoice).getRoster().size());
+		} while (playerChoice < 1 || playerChoice > theTeam.getRoster().size());
 		playerChoice -= 1;
 
-		theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setFreeAgent();
-		theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).setBench();
-		theLeague.playerList().set(theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice).getId(),
-				theLeague.getTeam(teamChoice).getTeamPlayer(playerChoice));
-		theLeague.getTeam(teamChoice).getRoster().remove(playerChoice);
+		Player thePlayer = theTeam.getTeamPlayer(playerChoice);
+		theTeam.getRoster().remove(playerChoice);
+		
+		thePlayer.setFreeAgent();
+		theLeague.playerList().set(thePlayer.getId(), thePlayer);
 	}
 
-	public static void addPlayer(League theLeague, int teamChoice) {
-		Scanner keyboard = new Scanner(System.in);
-
-		if (theLeague.getTeam(teamChoice).getRoster().size() >= theLeague.getMaxPlayers()) {
-			System.out.println("");
-			System.out.println("***Your team is full. You must drop a player before adding one.***");
-			return;
-		}
+	public static void addPlayer(League theLeague, Team theTeam, Scanner keyboard) {
 
 		System.out.println("");
 		System.out.println("---Add Player---");
@@ -97,14 +76,17 @@ public class ManageTeamOps {
 		System.out.println("-Top 20 Free Agents-");
 		System.out.println("");
 		theLeague.getFreeAgents(20);
+		if (theTeam.getRoster().size() >= theLeague.getMaxPlayers()) {
+			System.out.println("");
+			System.out.println("***Your team is full. You must drop a player before adding one.***");
+			return;
+		}
 
 		int playerChoice;
 		do {
 			System.out.println("");
 			System.out.println("Select a player to add:");
-			while (!keyboard.hasNextInt()) // ask again if anything other than
-											// an integer is entered
-			{
+			while (!keyboard.hasNextInt()) {
 				keyboard.next();
 				System.out.println("");
 				System.out.println("Select a player to add:");
@@ -112,113 +94,97 @@ public class ManageTeamOps {
 			playerChoice = keyboard.nextInt();
 
 			if (playerChoice >= 1 && playerChoice <= theLeague.playerList().size()) {
-				playerChoice -= 1;
-				if (theLeague.getPlayer(playerChoice).getIsOwned()) {
+				if (theLeague.playerList().get(playerChoice-1).getIsOwned()) {
 					System.out.println("");
-					System.out.println(theLeague.getPlayer(playerChoice).playerToString() + " is not available");
+					System.out.println(theLeague.playerList().get(playerChoice-1).playerToString() + " is not available");
 				} else {
 					System.out.println("");
 					System.out
-							.println("***You have added " + theLeague.getPlayer(playerChoice).playerToString() + "***");
+							.println("***You have added " + theLeague.playerList().get(playerChoice-1).playerToString() + "***");
 				}
 			}
-		} while (playerChoice < 0 || playerChoice > theLeague.playerList().size() - 1
-				|| theLeague.getPlayer(playerChoice).getIsOwned());
-
-		theLeague.getPlayer(playerChoice).setIsOwned();
-		theLeague.getTeam(teamChoice).getRoster().add(theLeague.getTeam(teamChoice).getRoster().size(),
-				theLeague.getPlayer(playerChoice));
+		} while (playerChoice < 1 || playerChoice > theLeague.playerList().size()
+				|| theLeague.playerList().get(playerChoice-1).getIsOwned());
+		playerChoice -= 1;
+		
+		Player thePlayer = theLeague.playerList().get(playerChoice);
+		thePlayer.setIsOwned();
+		theTeam.getRoster().add(theTeam.getRoster().size(), thePlayer);
 	}
 
-	public static void proposeTrade(League theLeague, int teamChoice) {
-		Scanner keyboard = new Scanner(System.in);
+	public static void proposeTrade(League theLeague, Team theTeam, Scanner keyboard) {
 		int teamToView;
 		String decision;
 		String proposal;
 
 		System.out.println("");
 		System.out.println("---Propose Trade---");
-
 		for (int x = 0; x < theLeague.getNumTeams(); x++) {
-			if (x != teamChoice) {
+			if (theLeague.getTeam(x).getManagerName() != theTeam.getManagerName()) {
 				System.out.println("");
 				System.out.println("Team number: " + (x + 1));
 				theLeague.getTeam(x).teamManNameToString();
 			}
 		}
-
 		do {
 			System.out.println("");
 			System.out.println("Select a team to view:");
-			while (!keyboard.hasNextInt()) // ask again if anything other than
-											// an integer is entered
-			{
+			while (!keyboard.hasNextInt()) {
 				keyboard.next();
 				System.out.println("");
 				System.out.println("Select a team to view:");
 			}
 			teamToView = keyboard.nextInt();
-		} while (teamToView < 1 || teamToView == teamChoice + 1 || teamToView > theLeague.getNumTeams());
+		} while (teamToView < 1 || teamToView-1 == theLeague.getTeamList().indexOf(theTeam) || teamToView > theLeague.getNumTeams());
 		teamToView -= 1;
-
+		
+		Team otherTeam = theLeague.getTeam(teamToView);
+		
 		System.out.println("");
 		System.out.println("---Propose Trade---");
 		System.out.println("");
-		theLeague.getTeam(teamToView).teamToString();
-
+		otherTeam.teamToString();
 		do {
 			keyboard.nextLine();
 			System.out.println("");
 			System.out.println("Would you like to propose a trade to this team? (y/n)");
 			decision = keyboard.nextLine();
-
 			if (decision.equalsIgnoreCase("y")) {
 				do {
 					System.out.println("");
 					System.out.println("---Propose Trade---");
 					System.out.println("");
-					theLeague.getTeam(teamToView).teamToString();
+					otherTeam.teamToString();
 					System.out.println("");
 					System.out.println("Enter your trade offer (max 64 characters):");
 					proposal = keyboard.nextLine();
 				} while (proposal.isEmpty() || proposal.length() > 64);
 
-				proposal = theLeague.getTeam(teamChoice).getManagerName() + ": " + proposal;
-				theLeague.getTeam(teamToView).setProposedTrade(proposal);
-
+				proposal = theTeam.getManagerName() + ": " + proposal;
+				otherTeam.setProposedTrade(proposal);
 				return;
 			}
 		} while (!decision.equalsIgnoreCase("n"));
 	}
 
-	public static void reviewTrade(League theLeague, int teamChoice) {
-		if (theLeague.getTeam(teamChoice).getProposedTrade().isEmpty()) {
-			System.out.println("");
-			System.out.println("--You have not been offered a trade--");
-			return;
-		}
-
-		Scanner keyboard = new Scanner(System.in);
+	public static void reviewTrade(League theLeague, Team theTeam, Scanner keyboard) {
 		int decision;
-
 		do {
 			System.out.println("");
 			System.out.println("---Review Trade Proposal---");
 			System.out.println("");
-			System.out.println(theLeague.getTeam(teamChoice).getProposedTrade());
+			System.out.println(theTeam.getProposedTrade());
 			System.out.println("");
 			System.out.println("Would you like to accept this trade?");
 			System.out.println("1 - Accept");
 			System.out.println("2 - Reject");
 			System.out.println("3 - Go Back");
-			while (!keyboard.hasNextInt()) // ask again if anything other than
-											// an integer is entered
-			{
+			while (!keyboard.hasNextInt()) {
 				keyboard.next();
 				System.out.println("");
 				System.out.println("---Review Trade Proposal---");
 				System.out.println("");
-				System.out.println(theLeague.getTeam(teamChoice).getProposedTrade());
+				System.out.println(theTeam.getProposedTrade());
 				System.out.println("");
 				System.out.println("Would you like to accept this trade?");
 				System.out.println("1 - Accept");
@@ -226,18 +192,18 @@ public class ManageTeamOps {
 				System.out.println("3 - Go Back");
 			}
 			decision = keyboard.nextInt();
-		} while (decision < 0 || decision > 3);
+		} while (decision < 1 || decision > 3);
 
 		switch (decision) {
 		case 1:
-			theLeague.getTeam(0).setPendingTrade("Accepted by " + theLeague.getTeam(teamChoice).getManagerName()
-					+ " --- " + theLeague.getTeam(teamChoice).getProposedTrade());
-			theLeague.getTeam(teamChoice).setProposedTrade("");
+			theLeague.setPendingTrade("Accepted by " + theTeam.getManagerName()
+					+ " --- " + theTeam.getProposedTrade());
+			theTeam.setProposedTrade("");
 			System.out.println("");
 			System.out.println("***Trade Accepted - The Commissioner Must Process It.***");
 			break;
 		case 2:
-			theLeague.getTeam(teamChoice).setProposedTrade("");
+			theTeam.setProposedTrade("");
 			System.out.println("");
 			System.out.println("***Trade Rejected***");
 			break;
@@ -248,50 +214,26 @@ public class ManageTeamOps {
 		}
 	}
 
-	public static void editTeamName(League theLeague, int teamChoice) {
-		Scanner keyboard = new Scanner(System.in);
+	public static void editTeamName(League theLeague, Team theTeam, Scanner keyboard) {
 		String newTeamName;
-
 		do {
 			System.out.println("");
 			System.out.println("---Edit Team Name---");
 			System.out.println("");
 			System.out.println("Enter your new team name:");
 			newTeamName = keyboard.nextLine();
+			for (int x = 0; x < theLeague.getNumTeams(); x++) {
+				if (theLeague.getTeam(x).getTeamName().equalsIgnoreCase(newTeamName)) {
+					System.out.println("That team name is already being used.");
+					newTeamName = "";
+				}
+			}
 		} while (newTeamName.isEmpty() || newTeamName.length() > 32);
-
-		theLeague.getTeam(teamChoice).setTeamName(newTeamName);
+		theTeam.setTeamName(newTeamName);
 	}
 
-	public static void viewSettings(League theLeague) {
-		System.out.println("");
-		System.out.println("---League Settings---");
-		System.out.println("League Name: " + theLeague.getLeagueName());
-		System.out.println("Scoring Rules: " + theLeague.getScoringRules());
-		System.out.println("Starting Positions: (" + theLeague.getMaxPlayers() + " player maximum)");
-		System.out.println(theLeague.getNumQB() + " QB");
-		System.out.println(theLeague.getNumWR() + " WR");
-		System.out.println(theLeague.getNumRB() + " RB");
-		System.out.println(theLeague.getNumTE() + " TE");
-		System.out.println(theLeague.getNumBench() + " Bench");
-	}
-
-	public static void viewStandings(League theLeague) {
-		System.out.println("");
-		System.out.println("---League Standings---");
-		for (int x = 0; x < theLeague.getNumTeams(); x++) {
-			System.out.println("");
-			theLeague.getTeam(x).teamManNameToString();
-			;
-			System.out.println("Record: " + theLeague.getTeam(x).getRecord());
-			System.out.println("This week's score: " + theLeague.getTeam(x).getScore());
-		}
-	}
-
-	public static void commissionerTools(League theLeague) {
-		Scanner keyboard = new Scanner(System.in);
+	public static void commissionerTools(League theLeague, Scanner keyboard) {
 		int toolChoice;
-
 		do {
 			System.out.println("");
 			System.out.println("---Commissioner Tools---");
@@ -299,9 +241,7 @@ public class ManageTeamOps {
 			System.out.println("2 - Edit Standings");
 			System.out.println("3 - Review Accepted Trade");
 			System.out.println("4 - Return to Team");
-			while (!keyboard.hasNextInt()) // ask again if anything other than
-											// an integer is entered
-			{
+			while (!keyboard.hasNextInt()) {
 				keyboard.next();
 				System.out.println("");
 				System.out.println("---Commissioner Tools---");
@@ -315,13 +255,18 @@ public class ManageTeamOps {
 
 		switch (toolChoice) {
 		case 1:
-			editScores(theLeague);
+			editScores(theLeague, keyboard);
 			break;
 		case 2:
-			editStandings(theLeague);
+			editStandings(theLeague, keyboard);
 			break;
 		case 3:
-			reviewAcceptedTrade(theLeague);
+			if (theLeague.getPendingTrade().isEmpty()) {
+				System.out.println("");
+				System.out.println("--There are no accepted trades pending--");
+				break;
+			}
+			reviewAcceptedTrade(theLeague, keyboard);
 			break;
 		case 4:
 			break;
@@ -330,36 +275,18 @@ public class ManageTeamOps {
 		}
 	}
 
-	public static void reviewAcceptedTrade(League theLeague) {
-		if (theLeague.getTeam(0).getPendingTrade().isEmpty()) {
-			System.out.println("");
-			System.out.println("--There are no accepted trades pending--");
-			return;
-		}
-
-		System.out.println("");
-		System.out.println("---Accepted Trade---");
-		System.out.println("");
-		System.out.println(theLeague.getTeam(0).getPendingTrade());
-	}
-
-	public static void editScores(League theLeague) {
-		Scanner keyboard = new Scanner(System.in);
+	public static void editScores(League theLeague, Scanner keyboard) {
 		int score;
 
 		System.out.println("");
 		System.out.println("---Edit Scores---");
-
 		for (int x = 0; x < theLeague.getNumTeams(); x++) {
 			System.out.println("");
 			theLeague.getTeam(x).teamManNameToString();
 			System.out.println("");
-
 			do {
 				System.out.println("Enter a score for " + theLeague.getTeam(x).getTeamName());
-				while (!keyboard.hasNextInt()) // ask again if anything other
-												// than an integer is entered
-				{
+				while (!keyboard.hasNextInt()) {
 					keyboard.next();
 					System.out.println("Enter a score for " + theLeague.getTeam(x).getTeamName());
 				}
@@ -369,13 +296,11 @@ public class ManageTeamOps {
 		}
 	}
 
-	public static void editStandings(League theLeague) {
-		Scanner keyboard = new Scanner(System.in);
+	public static void editStandings(League theLeague, Scanner keyboard) {
 		String record;
 
 		System.out.println("");
 		System.out.println("---Edit Standings---");
-
 		for (int x = 0; x < theLeague.getNumTeams(); x++) {
 			do {
 				System.out.println("");
@@ -386,6 +311,32 @@ public class ManageTeamOps {
 				record = keyboard.nextLine();
 			} while (record.isEmpty() || record.length() > 32);
 			theLeague.getTeam(x).setRecord(record);
+		}
+	}
+
+	public static void reviewAcceptedTrade(League theLeague, Scanner keyboard) {
+		System.out.println("");
+		System.out.println("---Accepted Trade---");
+		System.out.println("");
+		System.out.println(theLeague.getPendingTrade());
+		
+		int choice;
+		do {
+			System.out.println("");
+			System.out.println("-Has this trade been processed?-");
+			System.out.println("1 - Yes");
+			System.out.println("2 - No");
+			while (!keyboard.hasNextInt()) {
+				keyboard.next();
+				System.out.println("");
+				System.out.println("-Has this trade been processed?-");
+				System.out.println("1 - Yes");
+				System.out.println("2 - No");
+			}
+			choice = keyboard.nextInt();
+		} while (choice < 1 || choice > 2);
+		if (choice == 1) {
+			theLeague.setPendingTrade("");
 		}
 	}
 }

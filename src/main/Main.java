@@ -7,12 +7,15 @@ import league.ManageTeam;
 
 public class Main {
 	public static void main(String[] args) {
+		Scanner keyboard = new Scanner(System.in);
+		int choice;
+		
 		while (true) {
-			Scanner keyboard = new Scanner(System.in);
-			int choice = -1;
 			do {
 				System.out.println("");
+				System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
 				System.out.println("~~~Fantasy Football~~~");
+				System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
 				System.out.println("");
 				System.out.println("---Main Menu---");
 				System.out.println("");
@@ -21,13 +24,12 @@ public class Main {
 				System.out.println("3 - Load Sample League");
 				System.out.println("");
 				System.out.println("0 - Exit");
-
-				while (!keyboard.hasNextInt()) // ask again if anything other
-												// than an integer is entered
-				{
+				while (!keyboard.hasNextInt()) {
 					keyboard.next();
 					System.out.println("");
+					System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("~~~Fantasy Football~~~");
+					System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
 					System.out.println("");
 					System.out.println("---Main Menu---");
 					System.out.println("");
@@ -37,18 +39,17 @@ public class Main {
 					System.out.println("");
 					System.out.println("0 - Exit");
 				}
-
 				choice = keyboard.nextInt();
 			} while (choice < 0 || choice > 3);
 
 			if (choice == 1) {
-				CreateLeague.create();
+				CreateLeague.create(keyboard);
 			}
 			if (choice == 2) {
-				ManageTeam.manage();
+				ManageTeam.manage(keyboard);
 			}
 			if (choice == 3) {
-				ManageTeam.loadSample();
+				ManageTeam.loadSample(keyboard);
 			}
 			if (choice == 0) {
 				if (keyboard != null) {

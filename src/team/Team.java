@@ -9,15 +9,10 @@ import java.io.Serializable;
 public class Team implements Serializable {
 	private String managerName;
 	private String teamName;
-
 	private String proposedTrade;
-	private String pendingTrade;
-
 	private int score;
 	private String record;
-
 	private ArrayList<Player> roster;
-
 	public static final long serialVersionUID = 1L;
 
 	// Commissioner should be able to create a league, and establish the
@@ -31,13 +26,9 @@ public class Team implements Serializable {
 	public Team() {
 		managerName = "";
 		teamName = "";
-
 		proposedTrade = "";
-		pendingTrade = "";
-
 		score = 0;
 		record = "";
-
 		roster = new ArrayList<Player>();
 	}
 
@@ -51,10 +42,6 @@ public class Team implements Serializable {
 
 	public String getProposedTrade() {
 		return proposedTrade;
-	}
-
-	public String getPendingTrade() {
-		return pendingTrade;
 	}
 
 	public int getScore() {
@@ -72,41 +59,11 @@ public class Team implements Serializable {
 	public Player getTeamPlayer(int x) {
 		return roster.get(x);
 	}
-
-	public int countQB() {
+	
+	public int starterCount(String pos) {
 		int count = 0;
 		for (int x = 0; x < roster.size(); x++) {
-			if (roster.get(x).getIsStartingQB()) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public int countWR() {
-		int count = 0;
-		for (int x = 0; x < roster.size(); x++) {
-			if (roster.get(x).getIsStartingWR()) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public int countRB() {
-		int count = 0;
-		for (int x = 0; x < roster.size(); x++) {
-			if (roster.get(x).getIsStartingRB()) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public int countTE() {
-		int count = 0;
-		for (int x = 0; x < roster.size(); x++) {
-			if (roster.get(x).getIsStartingTE()) {
+			if (roster.get(x).getIsStarting() && roster.get(x).getPosition().equals(pos)) {
 				count++;
 			}
 		}
@@ -125,10 +82,6 @@ public class Team implements Serializable {
 		proposedTrade = trade;
 	}
 
-	public void setPendingTrade(String trade) {
-		pendingTrade = trade;
-	}
-
 	public void setScore(int sco) {
 		score = sco;
 	}
@@ -138,14 +91,14 @@ public class Team implements Serializable {
 	}
 
 	public void teamToString() {
-		System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
+		System.out.println("-Manager: " + managerName + "\n" + "----Team: " + teamName + "\n");
 		for (int x = 0; x < roster.size(); x++) {
 			System.out.println(roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
 		}
 	}
 
 	public void teamToStringNum() {
-		System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
+		System.out.println("-Manager: " + managerName + "\n" + "----Team: " + teamName + "\n");
 		for (int x = 0; x < roster.size(); x++) {
 			System.out.println(
 					(x + 1) + " - " + roster.get(x).startingIndicator() + " " + roster.get(x).playerToString());
@@ -153,6 +106,6 @@ public class Team implements Serializable {
 	}
 
 	public void teamManNameToString() {
-		System.out.println("Manager: " + managerName + "\n" + "Team: " + teamName);
+		System.out.println("-Manager: " + managerName + "\n" + "----Team: " + teamName);
 	}
 }
