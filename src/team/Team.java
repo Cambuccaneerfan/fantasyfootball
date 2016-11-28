@@ -59,7 +59,7 @@ public class Team implements Serializable {
 	public Player getTeamPlayer(int x) {
 		return roster.get(x);
 	}
-	
+
 	public int starterCount(String pos) {
 		int count = 0;
 		for (int x = 0; x < roster.size(); x++) {

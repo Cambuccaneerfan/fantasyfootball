@@ -83,7 +83,7 @@ public class League implements Serializable {
 	public int getMaxPlayers() {
 		return maxQB + maxWR + maxRB + maxTE + maxBench;
 	}
-	
+
 	public int getPositionMax(String pos) {
 		if (pos.equals("QB")) {
 			return maxQB;
@@ -152,21 +152,16 @@ public class League implements Serializable {
 	public void setPlayerList(ArrayList<Player> pList) {
 		playList = pList;
 	}
-	
+
 	public void createTeamList() {
 		for (int x = 0; x < getNumTeams(); x++) {
 			Team aTeam = new Team();
 			getTeamList().add(aTeam);
 		}
 	}
-	
+
 	public void createPlayerList() {
 		playList = PlayerList.create();
-	}
-
-	public void setDraftResult(int teamNum, int playerListSpot) {
-		playerList().get(playerListSpot).setIsOwned();
-		getTeam(teamNum).getRoster().add(playerList().get(playerListSpot));
 	}
 
 	public void getFreeAgents() {
@@ -180,15 +175,32 @@ public class League implements Serializable {
 	public void getFreeAgents(int numToShow) {
 		int y = 0;
 		for (int x = 0; x < numToShow; x++) {
-			while (playerList().get(y).getIsOwned() == true) {
+			while (playerList().get(y).getIsOwned()) {
 				y++;
 			}
-			if (playerList().get(y).getIsOwned() == false) {
-				System.out.println((y + 1) + " " + playerList().get(y).playerToString());
+			System.out.println((y + 1) + " " + playerList().get(y).playerToString());
+			y++;
+		}
+	}
+	
+	public void getFreeAgents(int numToShow, String position) {
+		int y = 0;
+
+		for (int x = 0; x < numToShow; x++) {
+			while (playerList().get(y).getIsOwned() || !playerList().get(y).getPosition().equals(position)) {
 				y++;
+				if (y == playerList().size()) {
+					break;
+				}
+			}
+			System.out.println((y + 1) + " " + playerList().get(y).playerToString());
+			y++;
+			if (y == playerList().size()) {
+				break;
 			}
 		}
 	}
+
 	public void viewSettings() {
 		System.out.println("");
 		System.out.println("---League Settings---");

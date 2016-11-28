@@ -8,38 +8,28 @@ import league.ManageTeam;
 public class Main {
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);
-		int choice;
 		
 		while (true) {
+			System.out.println("");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println("~~~Fantasy Football~~~");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
+			System.out.println("");
+			System.out.println("---Main Menu---");
+			System.out.println("");
+			System.out.println("1 - Create New League");
+			System.out.println("2 - Continue Saved League");
+			System.out.println("3 - Load Sample League");
+			System.out.println("");
+			System.out.println("0 - Exit");
+			
+			int choice;
 			do {
-				System.out.println("");
-				System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.println("~~~Fantasy Football~~~");
-				System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.println("");
-				System.out.println("---Main Menu---");
-				System.out.println("");
-				System.out.println("1 - Create New League");
-				System.out.println("2 - Continue Saved League");
-				System.out.println("3 - Load Sample League");
-				System.out.println("");
-				System.out.println("0 - Exit");
 				while (!keyboard.hasNextInt()) {
-					keyboard.next();
-					System.out.println("");
-					System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
-					System.out.println("~~~Fantasy Football~~~");
-					System.out.println("~~~~~~~~~~~~~~~~~~~~~~");
-					System.out.println("");
-					System.out.println("---Main Menu---");
-					System.out.println("");
-					System.out.println("1 - Create a new League");
-					System.out.println("2 - Continue saved League");
-					System.out.println("3 - Load Sample League");
-					System.out.println("");
-					System.out.println("0 - Exit");
+					keyboard.nextLine();
 				}
 				choice = keyboard.nextInt();
+				keyboard.nextLine();
 			} while (choice < 0 || choice > 3);
 
 			if (choice == 1) {

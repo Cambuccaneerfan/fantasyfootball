@@ -9,8 +9,8 @@ import player.Player;
 import team.Team;
 
 public class Serializer {
-	public void serializeLeague(String name, int numOfTeams, String rules, String trade, int QB, int WR, int RB, int TE, int bench,
-			ArrayList<Team> listTeams, ArrayList<Player> listPlayers) {
+	public void serializeLeague(String name, int numOfTeams, String rules, String trade, int QB, int WR, int RB, int TE,
+			int bench, ArrayList<Team> listTeams, ArrayList<Player> listPlayers) {
 		League theLeague = new League();
 		theLeague.setLeagueName(name);
 		theLeague.setNumTeams(numOfTeams);
