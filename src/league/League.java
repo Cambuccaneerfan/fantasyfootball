@@ -185,18 +185,17 @@ public class League implements Serializable {
 	
 	public void getFreeAgents(int numToShow, String position) {
 		int y = 0;
-
 		for (int x = 0; x < numToShow; x++) {
 			while (playerList().get(y).getIsOwned() || !playerList().get(y).getPosition().equals(position)) {
 				y++;
 				if (y == playerList().size()) {
-					break;
+					return;
 				}
 			}
 			System.out.println((y + 1) + " " + playerList().get(y).playerToString());
 			y++;
 			if (y == playerList().size()) {
-				break;
+				return;
 			}
 		}
 	}

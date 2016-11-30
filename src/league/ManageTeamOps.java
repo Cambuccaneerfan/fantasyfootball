@@ -14,17 +14,24 @@ public class ManageTeamOps {
 		theTeam.teamToStringNum();
 		System.out.println("");
 		System.out.println("Select a player to move from the bench to starting or vice versa:");
-		Player thePlayer = theTeam.getTeamPlayer(Input.validInt(1, theTeam.getRoster().size(), keyboard) - 1);
-
-		String position = thePlayer.getPosition();
-		if (!thePlayer.getIsStarting()) {
-			if (theTeam.starterCount(position) < theLeague.getPositionMax(position)) {
-				thePlayer.setStarting();
-			} else {
-				System.out.println("--You have the maximum number of starters at the " + position + " position--");
-			}
-		} else if (thePlayer.getIsStarting()) {
+		System.out.println("0 - Return to Team Menu");
+		System.out.println("1-" + theTeam.getRoster().size() + " - Select a player to be dropped");
+		
+		int lineupChoice = Input.validInt(0, theTeam.getRoster().size(), keyboard);
+		if (lineupChoice == 0) {
+			return;
+		}
+		Player thePlayer = theTeam.getTeamPlayer(lineupChoice - 1);
+		
+		if (thePlayer.getIsStarting()) {
 			thePlayer.setBench();
+			return;
+		}
+		String position = thePlayer.getPosition();
+		if (theTeam.starterCount(position) < theLeague.getPositionMax(position)) {
+			thePlayer.setStarting();
+		} else {
+			System.out.println("--You have the maximum number of starters at the " + position + " position--");
 		}
 	}
 
@@ -34,8 +41,13 @@ public class ManageTeamOps {
 		System.out.println("");
 		theTeam.teamToStringNum();
 		System.out.println("");
-		System.out.println("Select a player that you would like to drop:");
-		Player thePlayer = theTeam.getTeamPlayer(Input.validInt(1, theTeam.getRoster().size(), keyboard) - 1);
+		System.out.println("   0 - Return to Team Menu");
+		System.out.println("1-" + theTeam.getRoster().size() + " - Select a player to be dropped");
+		int dropChoice = Input.validInt(0, theTeam.getRoster().size(), keyboard);
+		if (dropChoice == 0) {
+			return;
+		}
+		Player thePlayer = theTeam.getTeamPlayer(dropChoice - 1);
 
 		thePlayer.setFreeAgent();
 		theLeague.playerList().set(thePlayer.getId(), thePlayer);
@@ -58,6 +70,10 @@ public class ManageTeamOps {
 				System.out.println("   -1 - View All Free Agents");
 				System.out.println("1-" + theLeague.playerList().size() + " - Select a Player");
 				playerChoice = Input.validInt(-1, theLeague.playerList().size(), keyboard);
+				
+				if (playerChoice == -1) {
+					theLeague.getFreeAgents();
+				}
 
 				if (playerChoice == 0) {
 					System.out.println("");
@@ -113,6 +129,7 @@ public class ManageTeamOps {
 		}
 		System.out.println("");
 		System.out.println("Select a team to view:");
+		
 		int otherTeamChoice;
 		do {
 			otherTeamChoice = Input.validInt(1, theLeague.getNumTeams(), keyboard) - 1;
@@ -126,11 +143,17 @@ public class ManageTeamOps {
 		System.out.println("");
 		System.out.println("Would you like to propose a trade to this team?");
 		System.out.println("1 - Yes");
-		System.out.println("2 - No");
+		System.out.println("2 - No, Return to Team Menu");
+		
 		if (Input.validInt(1, 2, keyboard) == 1) {
 			System.out.println("");
 			System.out.println("Enter your trade offer (max 64 characters):");
-			otherTeam.setProposedTrade(theTeam.getManagerName() + ": " + Input.validString(64, keyboard));
+			System.out.println("0 - Return to Team Menu");
+			String proposal = Input.validString(32, keyboard);
+			if (proposal.equals("0")) {
+				return;
+			}
+			otherTeam.setProposedTrade(theTeam.getManagerName() + ": " + proposal);
 		}
 	}
 
@@ -142,9 +165,9 @@ public class ManageTeamOps {
 		System.out.println("Would you like to accept this trade?");
 		System.out.println("1 - Accept");
 		System.out.println("2 - Reject");
-		System.out.println("3 - Go Back");
+		System.out.println("0 - Return to Team Menu");
 
-		switch (Input.validInt(1, 3, keyboard)) {
+		switch (Input.validInt(0, 2, keyboard)) {
 		case 1:
 			theLeague.setPendingTrade("Accepted by " + theTeam.getManagerName() + " --- " + theTeam.getProposedTrade());
 			theTeam.setProposedTrade("");
@@ -156,9 +179,7 @@ public class ManageTeamOps {
 			System.out.println("");
 			System.out.println("***Trade Rejected***");
 			break;
-		case 3:
-			break;
-		default:
+		case 0:
 			break;
 		}
 	}
@@ -167,9 +188,14 @@ public class ManageTeamOps {
 		System.out.println("");
 		System.out.println("---Edit Team Name---");
 		System.out.println("Enter your new team name: (max 32 characters)");
+		System.out.println("0 - Return to Team Menu");
+		
 		String teamName;
 		do {
 			teamName = Input.validString(32, keyboard);
+			if (teamName.equals("0")) {
+				return;
+			}
 			for (int y = 0; y < theLeague.getNumTeams(); y++) {
 				if (teamName.equalsIgnoreCase(theLeague.getTeam(y).getTeamName())) {
 					System.out.println("That team name is already being used.");
@@ -186,9 +212,9 @@ public class ManageTeamOps {
 		System.out.println("1 - Edit Scores");
 		System.out.println("2 - Edit Standings");
 		System.out.println("3 - Review Accepted Trade");
-		System.out.println("4 - Return to Team");
+		System.out.println("0 - Return to Team Menu");
 
-		switch (Input.validInt(1, 4, keyboard)) {
+		switch (Input.validInt(0, 3, keyboard)) {
 		case 1:
 			editScores(theLeague, keyboard);
 			break;
@@ -203,9 +229,7 @@ public class ManageTeamOps {
 			}
 			reviewAcceptedTrade(theLeague, keyboard);
 			break;
-		case 4:
-			break;
-		default:
+		case 0:
 			break;
 		}
 	}
@@ -216,9 +240,16 @@ public class ManageTeamOps {
 		for (int x = 0; x < theLeague.getNumTeams(); x++) {
 			System.out.println("");
 			theLeague.getTeam(x).teamManNameToString();
+			System.out.println("Current score: " + theLeague.getTeam(x).getScore());
 			System.out.println("");
 			System.out.println("Enter a score for " + theLeague.getTeam(x).getTeamName() + ": (max 512)");
-			theLeague.getTeam(x).setScore(Input.validInt(0, 512, keyboard));
+			System.out.println("0 - Return to Team Menu");
+			
+			int newScore = Input.validInt(0, 512, keyboard);
+			if (newScore == 0) {
+				return;
+			}
+			theLeague.getTeam(x).setScore(newScore);
 		}
 	}
 
@@ -231,7 +262,13 @@ public class ManageTeamOps {
 			System.out.println("Current record: " + theLeague.getTeam(x).getRecord());
 			System.out.println("");
 			System.out.println("Enter a new record: (max 32 characters)");
-			theLeague.getTeam(x).setRecord(Input.validString(32, keyboard));
+			System.out.println("0 - Return to Team Menu");
+			
+			String newRecord = Input.validString(32, keyboard);
+			if (newRecord.equals("0")) {
+				return;
+			}
+			theLeague.getTeam(x).setRecord(newRecord);
 		}
 	}
 

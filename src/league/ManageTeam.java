@@ -121,8 +121,6 @@ public class ManageTeam {
 				break;
 			case 0:
 				return;
-			default:
-				break;
 			}
 
 			serializer.serializeLeague(theLeague.getLeagueName(), theLeague.getNumTeams(), theLeague.getScoringRules(),
