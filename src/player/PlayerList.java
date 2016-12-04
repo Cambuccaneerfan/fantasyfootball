@@ -6,6 +6,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class PlayerList {
+	/**
+	 * Create the initial player list. Scan the playerList.txt file and create 
+	 * array of Player objects using the player information listed.
+	 * 
+	 * @return  the player list array
+	 */
 	public static ArrayList<Player> create() {
 		Scanner playerScan = null;
 		try {

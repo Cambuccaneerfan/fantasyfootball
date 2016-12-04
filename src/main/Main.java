@@ -6,6 +6,10 @@ import league.CreateLeague;
 import league.ManageTeam;
 import utilities.Input;
 
+/**
+ * The program starts here, at the main menu.
+ *
+ */
 public class Main {
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);

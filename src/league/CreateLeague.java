@@ -6,6 +6,11 @@ import utilities.Input;
 import utilities.Serializer;
 
 public class CreateLeague {
+	/**
+	 * Create a new customized league
+	 * 
+	 * @param keyboard  the keyboard
+	 */
 	public static void create(Scanner keyboard) {
 		League theLeague = new League();
 
@@ -51,17 +56,22 @@ public class CreateLeague {
 
 		// (4) maximum players per team, (4) starting players per team... max =
 		// starting + bench
-		System.out.println("How many starting QBs will each team use? (0-2)");
-		theLeague.setMaxQB(Input.validInt(0, 2, keyboard));
-		System.out.println("How many starting WRs will each team use? (0-4)");
-		theLeague.setMaxWR(Input.validInt(0, 4, keyboard));
-		System.out.println("How many starting RBs will each team use? (0-4)");
-		theLeague.setMaxRB(Input.validInt(0, 4, keyboard));
-		System.out.println("How many starting TEs will each team use? (0-2)");
-		theLeague.setMaxTE(Input.validInt(0, 2, keyboard));
-		System.out.println("How many Bench players will each team use? (0-8)");
-		theLeague.setMaxBench(Input.validInt(0, 8, keyboard));
-
+		do {
+			System.out.println("How many starting QBs will each team use? (0-2)");
+			theLeague.setMaxQB(Input.validInt(0, 2, keyboard));
+			System.out.println("How many starting WRs will each team use? (0-4)");
+			theLeague.setMaxWR(Input.validInt(0, 4, keyboard));
+			System.out.println("How many starting RBs will each team use? (0-4)");
+			theLeague.setMaxRB(Input.validInt(0, 4, keyboard));
+			System.out.println("How many starting TEs will each team use? (0-2)");
+			theLeague.setMaxTE(Input.validInt(0, 2, keyboard));
+			System.out.println("How many Bench players will each team use? (0-8)");
+			theLeague.setMaxBench(Input.validInt(0, 8, keyboard));
+			if (theLeague.getMaxPlayers() == 0) {
+				System.out.println("The roster has to include at least one player!");
+			}
+		} while (theLeague.getMaxPlayers() == 0);
+		
 		// (5) the managers in the league... set team names as well
 		for (int x = 0; x < theLeague.getNumTeams(); x++) {
 			if (x == 0) {
@@ -93,7 +103,7 @@ public class CreateLeague {
 			} while (theLeague.getTeam(x).getTeamName().isEmpty());
 		}
 
-		// (6) enter draft results
+		// (6) enter draft results using the addPlayer method
 		theLeague.createPlayerList();
 		for (int x = 0; x < theLeague.getMaxPlayers(); x++) {
 			for (int y = 0; y < theLeague.getNumTeams(); y++) {
@@ -101,6 +111,7 @@ public class CreateLeague {
 			}
 		}
 
+		// display all teams
 		System.out.println("");
 		System.out.println("////////////////////////////////");
 		System.out.println("");
@@ -113,6 +124,7 @@ public class CreateLeague {
 			System.out.println("");
 		}
 
+		// save new league
 		Serializer serializer = new Serializer();
 		serializer.serializeLeague(theLeague.getLeagueName(), theLeague.getNumTeams(), theLeague.getScoringRules(),
 				theLeague.getPendingTrade(), theLeague.getMaxQB(), theLeague.getMaxWR(), theLeague.getMaxRB(),

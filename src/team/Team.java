@@ -15,14 +15,10 @@ public class Team implements Serializable {
 	private ArrayList<Player> roster;
 	public static final long serialVersionUID = 1L;
 
-	// Commissioner should be able to create a league, and establish the
-	// settings for the league.
-	// The commissioner must be able to set the league name, number of teams in
-	// the league,
-	// scoring rules, maximum players per team, starting players per team, the
-	// managers in the league,
-	// and also be able to enter draft results.
-
+	/**
+	 * Team object holds information and players specific 
+	 * to each manager.
+	 */
 	public Team() {
 		managerName = "";
 		teamName = "";
@@ -32,34 +28,67 @@ public class Team implements Serializable {
 		roster = new ArrayList<Player>();
 	}
 
+	/**
+	 * @return  this team manager's name
+	 */
 	public String getManagerName() {
 		return managerName;
 	}
 
+	/**
+	 * @return  this team name
+	 */
 	public String getTeamName() {
 		return teamName;
 	}
 
+	/**
+	 * Will return empty if this team has not been offered a trade,
+	 * otherwise returns the proposed trade.
+	 * 
+	 * @return  any trade proposed to this team
+	 */
 	public String getProposedTrade() {
 		return proposedTrade;
 	}
 
+	/**
+	 * @return  this team's score for the week
+	 */
 	public int getScore() {
 		return score;
 	}
 
+	/**
+	 * @return  this team's season-long record
+	 */
 	public String getRecord() {
 		return record;
 	}
 
+	/**
+	 * @return  this team roster
+	 */
 	public ArrayList<Player> getRoster() {
 		return roster;
 	}
 
+	/**
+	 * Return a player from the team given it's index on the roster array.
+	 * 
+	 * @param x  location on roster array
+	 * @return  the player at that location
+	 */
 	public Player getTeamPlayer(int x) {
 		return roster.get(x);
 	}
 
+	/**
+	 * Return the amount of starters the team has at a given position.
+	 * 
+	 * @param pos  position to check
+	 * @return  number of starters on this team at that position
+	 */
 	public int starterCount(String pos) {
 		int count = 0;
 		for (int x = 0; x < roster.size(); x++) {
@@ -70,26 +99,46 @@ public class Team implements Serializable {
 		return count;
 	}
 
+	/**
+	 * @param mName  the manager name to set
+	 */
 	public void setManagerName(String mName) {
 		managerName = mName;
 	}
 
+	/**
+	 * @param tName  the team name to set
+	 */
 	public void setTeamName(String tName) {
 		teamName = tName;
 	}
 
+	/**
+	 * Sends a trade offer to this team
+	 * 
+	 * @param trade  the trade being offered to this team
+	 */
 	public void setProposedTrade(String trade) {
 		proposedTrade = trade;
 	}
 
+	/**
+	 * @param sco  the score to set
+	 */
 	public void setScore(int sco) {
 		score = sco;
 	}
 
+	/**
+	 * @param rec  the record to set
+	 */
 	public void setRecord(String rec) {
 		record = rec;
 	}
 
+	/**
+	 * Prints manager name, team name, and roster.
+	 */
 	public void teamToString() {
 		System.out.println("-Manager: " + managerName + "\n" + "----Team: " + teamName + "\n");
 		for (int x = 0; x < roster.size(); x++) {
@@ -97,6 +146,9 @@ public class Team implements Serializable {
 		}
 	}
 
+	/**
+	 * Prints manager name, team name, and roster with numbers next to players so they can be selected.
+	 */
 	public void teamToStringNum() {
 		System.out.println("-Manager: " + managerName + "\n" + "----Team: " + teamName + "\n");
 		for (int x = 0; x < roster.size(); x++) {
@@ -105,6 +157,9 @@ public class Team implements Serializable {
 		}
 	}
 
+	/**
+	 * Prints only manager name and team name
+	 */
 	public void teamManNameToString() {
 		System.out.println("-Manager: " + managerName + "\n" + "----Team: " + teamName);
 	}

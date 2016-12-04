@@ -7,6 +7,13 @@ import team.Team;
 import utilities.Input;
 
 public class ManageTeamOps {
+	/**
+	 * Move players between the bench and starting positions
+	 * 
+	 * @param theLeague  the league theTeam is in
+	 * @param theTeam  the team being managed
+	 * @param keyboard  the keyboard
+	 */
 	public static void editLineup(League theLeague, Team theTeam, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Edit Lineup---");
@@ -31,10 +38,18 @@ public class ManageTeamOps {
 		if (theTeam.starterCount(position) < theLeague.getPositionMax(position)) {
 			thePlayer.setStarting();
 		} else {
-			System.out.println("--You have the maximum number of starters at the " + position + " position--");
+			System.out.println("");
+			System.out.println("***You have the maximum number of starters at the " + position + " position***");
 		}
 	}
 
+	/**
+	 * Remove a player from the team and make the player a free agent.
+	 * 
+	 * @param theLeague  the league theTeam is in
+	 * @param theTeam  the team being managed
+	 * @param keyboard  the keyboard
+	 */
 	public static void dropPlayer(League theLeague, Team theTeam, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Drop Player---");
@@ -52,14 +67,23 @@ public class ManageTeamOps {
 		thePlayer.setFreeAgent();
 		theLeague.playerList().set(thePlayer.getId(), thePlayer);
 		theTeam.getRoster().remove(thePlayer);
+		System.out.println("");
+		System.out.println("***You have dropped " + thePlayer.playerToString() + "***");
 	}
 
+	/**
+	 * Add a free agent player to the team.
+	 * 
+	 * @param theLeague  the league theTeam is in
+	 * @param theTeam  the team being managed
+	 * @param keyboard  the keyboard
+	 */
 	public static void addPlayer(League theLeague, Team theTeam, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Add Player---");
 		theTeam.teamToString();
 		System.out.println("");
-		System.out.println("-Top 20 Free Agents-");
+		System.out.println("--Top 20 Free Agents--");
 		theLeague.getFreeAgents(20);
 
 		int playerChoice;
@@ -84,15 +108,19 @@ public class ManageTeamOps {
 					System.out.println("4 - TE");
 					switch (Input.validInt(1, 4, keyboard)) {
 					case 1:
+						System.out.println("\n--Top 20 Free Agent QBs--\n");
 						theLeague.getFreeAgents(20, "QB");
 						break;
 					case 2:
+						System.out.println("\n--Top 20 Free Agent WRs--\n");
 						theLeague.getFreeAgents(20, "WR");
 						break;
 					case 3:
+						System.out.println("\n--Top 20 Free Agent RBs--\n");
 						theLeague.getFreeAgents(20, "RB");
 						break;
 					case 4:
+						System.out.println("\n--Top 20 Free Agent TEs--\n");
 						theLeague.getFreeAgents(20, "TE");
 						break;
 					default:
@@ -105,18 +133,23 @@ public class ManageTeamOps {
 			if (theLeague.playerList().get(playerChoice - 1).getIsOwned()) {
 				System.out.println("");
 				System.out.println(theLeague.playerList().get(playerChoice - 1).playerToString() + " is not available");
-			} else {
-				System.out.println("");
-				System.out.println(
-						"***" + theTeam.getManagerName() + " has added " + theLeague.playerList().get(playerChoice - 1).playerToString() + "***");
 			}
 		} while (theLeague.playerList().get(playerChoice - 1).getIsOwned());
 
 		Player thePlayer = theLeague.playerList().get(playerChoice - 1);
 		thePlayer.setIsOwned();
-		theTeam.getRoster().add(theTeam.getRoster().size(), thePlayer);
+		theTeam.getRoster().add(thePlayer);
+		System.out.println("");
+		System.out.println("***" + theTeam.getManagerName() + " has added " + thePlayer.playerToString() + "***");
 	}
 
+	/**
+	 * Send a message to another team offering to trade players.
+	 * 
+	 * @param theLeague  the league theTeam is in
+	 * @param theTeam  the team being managed
+	 * @param keyboard  the keyboard
+	 */
 	public static void proposeTrade(League theLeague, Team theTeam, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Propose Trade---");
@@ -154,9 +187,19 @@ public class ManageTeamOps {
 				return;
 			}
 			otherTeam.setProposedTrade(theTeam.getManagerName() + ": " + proposal);
+			System.out.println("");
+			System.out.println("***You have proposed a trade:***");
+			System.out.println("To " + otherTeam.getManagerName() + ": " + proposal);
 		}
 	}
 
+	/**
+	 * Respond to a trade that has been offered by another manager.
+	 * 
+	 * @param theLeague  the league theTeam is in
+	 * @param theTeam  the team being managed
+	 * @param keyboard  the keyboard
+	 */
 	public static void reviewTrade(League theLeague, Team theTeam, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Review Proposed Trade---");
@@ -184,6 +227,13 @@ public class ManageTeamOps {
 		}
 	}
 
+	/**
+	 * Change the name of the team.
+	 * 
+	 * @param theLeague  the league theTeam is in
+	 * @param theTeam  the team being managed
+	 * @param keyboard  the keyboard
+	 */
 	public static void editTeamName(League theLeague, Team theTeam, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Edit Team Name---");
@@ -206,6 +256,13 @@ public class ManageTeamOps {
 		theTeam.setTeamName(teamName);
 	}
 
+	/**
+	 * Only available to the commissioner - edit scores, edit standings, remove
+	 * accepted trades after they are processed.
+	 * 
+	 * @param theLeague  the league the commissioner is managing
+	 * @param keyboard  the keyboard
+	 */
 	public static void commissionerTools(League theLeague, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Commissioner Tools---");
@@ -234,6 +291,12 @@ public class ManageTeamOps {
 		}
 	}
 
+	/**
+	 * Only available to the commissioner - edit this week's scores, for all managers to see.
+	 * 
+	 * @param theLeague  the league the commissioner is managing
+	 * @param keyboard  the keyboard
+	 */
 	public static void editScores(League theLeague, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Edit Scores---");
@@ -251,8 +314,16 @@ public class ManageTeamOps {
 			}
 			theLeague.getTeam(x).setScore(newScore);
 		}
+		System.out.println("");
+		System.out.println("***Scores Updated***");
 	}
 
+	/**
+	 * Only available to the commissioner - edit the season-long record for each team.
+	 * 
+	 * @param theLeague  the league the commissioner is managing
+	 * @param keyboard  the keyboard
+	 */
 	public static void editStandings(League theLeague, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Edit Standings---");
@@ -270,8 +341,17 @@ public class ManageTeamOps {
 			}
 			theLeague.getTeam(x).setRecord(newRecord);
 		}
+		System.out.println("");
+		System.out.println("***Standings Updated***");
 	}
 
+	/**
+	 * Only available to the commissioner - once the accepted trade has been processed, 
+	 * the message alerting the league to the trade can be removed.
+	 * 
+	 * @param theLeague  the league the commissioner is managing
+	 * @param keyboard  the keyboard
+	 */
 	public static void reviewAcceptedTrade(League theLeague, Scanner keyboard) {
 		System.out.println("");
 		System.out.println("---Accepted Trade---");

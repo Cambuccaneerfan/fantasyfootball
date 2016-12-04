@@ -8,19 +8,29 @@ import utilities.Input;
 import utilities.Serializer;
 
 public class ManageTeam {
+	/**
+	 * Load the sample League, save it, and manage it.
+	 * 
+	 * @param keyboard  the keyboard
+	 */
 	public static void loadSample(Scanner keyboard) {
 		Deserializer deserializer = new Deserializer();
 		League theLeague = deserializer.deserializeSampleLeague();
-
+		System.out.println("___Sample League Loaded___");
+		
 		Serializer serializer = new Serializer();
 		serializer.serializeLeague(theLeague.getLeagueName(), theLeague.getNumTeams(), theLeague.getScoringRules(),
 				theLeague.getPendingTrade(), theLeague.getMaxQB(), theLeague.getMaxWR(), theLeague.getMaxRB(),
 				theLeague.getMaxTE(), theLeague.getMaxBench(), theLeague.getTeamList(), theLeague.playerList());
 
-		System.out.println("--Sample League Loaded--");
 		manage(keyboard);
 	}
 
+	/**
+	 * Manage an existing team from the team menu.
+	 * 
+	 * @param keyboard  the keyboard
+	 */
 	public static void manage(Scanner keyboard) {
 		Deserializer deserializer = new Deserializer();
 		Serializer serializer = new Serializer();
@@ -65,7 +75,7 @@ public class ManageTeam {
 			System.out.println("6 - Change Team Name");
 			System.out.println("7 - View League Settings");
 			System.out.println("8 - View Scores and Standings");
-			System.out.println("9 - Commissioner Tools (edit standings, process trades)");
+			System.out.println("9 - Commissioner Tools (Edit Scores and Standings, Process Trades)");
 			System.out.println("0 - Exit to Main Menu");
 
 			switch (Input.validInt(0, 9, keyboard)) {
@@ -78,11 +88,11 @@ public class ManageTeam {
 			case 3:
 				if (theTeam.getRoster().size() >= theLeague.getMaxPlayers()) {
 					System.out.println("");
-					System.out.println("-All Free Agents-");
+					System.out.println("--All Free Agents--");
 					System.out.println("");
 					theLeague.getFreeAgents();
 					System.out.println("");
-					System.out.println("-Top 20 Free Agents-");
+					System.out.println("--Top 20 Free Agents--");
 					System.out.println("");
 					theLeague.getFreeAgents(20);
 					System.out.println("");
@@ -97,7 +107,7 @@ public class ManageTeam {
 			case 5:
 				if (theTeam.getProposedTrade().isEmpty()) {
 					System.out.println("");
-					System.out.println("--You have not been offered a trade--");
+					System.out.println("***You have not been offered a trade***");
 				} else {
 					ManageTeamOps.reviewTrade(theLeague, theTeam, keyboard);
 				}
@@ -123,6 +133,7 @@ public class ManageTeam {
 				return;
 			}
 
+			// save any time the user performs an operation and then returns to the team menu
 			serializer.serializeLeague(theLeague.getLeagueName(), theLeague.getNumTeams(), theLeague.getScoringRules(),
 					theLeague.getPendingTrade(), theLeague.getMaxQB(), theLeague.getMaxWR(), theLeague.getMaxRB(),
 					theLeague.getMaxTE(), theLeague.getMaxBench(), theLeague.getTeamList(), theLeague.playerList());

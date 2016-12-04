@@ -6,6 +6,11 @@ import java.io.ObjectInputStream;
 import league.League;
 
 public class Deserializer {
+	/**
+	 * Returns the League object saved to SavedLeague.ser.
+	 * 
+	 * @return  the saved league
+	 */
 	public League deserializeSavedLeague() {
 		League theLeague;
 
@@ -22,6 +27,11 @@ public class Deserializer {
 		}
 	}
 
+	/**
+	 * Returns the sample League object saved to SampleLeague.ser.
+	 * 
+	 * @return  the sample league
+	 */
 	public League deserializeSampleLeague() {
 		League theLeague;
 
